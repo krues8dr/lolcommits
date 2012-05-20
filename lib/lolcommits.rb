@@ -16,13 +16,11 @@ module Lolcommits
   LOLBASEDIR = File.join $home, ".lolcommits"
   LOLCOMMITS_ROOT = File.join(File.dirname(__FILE__), '..')
   
-  config = {}
+  @config = {}
   
-  config_file = File.join $home, '.lolcommitsrc'
-  puts config_file
-  if File.exists? config_file
-	  config = YAML.load_file(config_file)
-	  puts config["annotate"]["commitmsg"]
+  @config_file = File.join $home, '.lolcommitsrc'
+  if File.exists? @config_file
+	  @config = YAML.load_file(@config_file)
   end
 
   def is_mac?
@@ -143,7 +141,7 @@ module Lolcommits
       canvas.resize_to_fill!(640,480)
     end
 	
-	if config['annotate']
+	if @config['annotate']
 		# create a draw object for annotation
 		draw = Magick::Draw.new
 		#if is_mac?
