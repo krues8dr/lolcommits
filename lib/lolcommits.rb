@@ -8,12 +8,20 @@ require "git"
 require "RMagick"
 require "open3"
 require "launchy"
+require "YAML"
 include Magick
 
 module Lolcommits
   $home = ENV['HOME']
   LOLBASEDIR = File.join $home, ".lolcommits"
   LOLCOMMITS_ROOT = File.join(File.dirname(__FILE__), '..')
+  
+  config = 
+  
+  config_file = File.join $home, '.lolcommitsrc'
+  if File.exists? config_file
+	  config = YAML.load(config_file)
+  end
 
   def is_mac?
     RUBY_PLATFORM.downcase.include?("darwin")
