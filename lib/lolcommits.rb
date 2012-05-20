@@ -16,11 +16,12 @@ module Lolcommits
   LOLBASEDIR = File.join $home, ".lolcommits"
   LOLCOMMITS_ROOT = File.join(File.dirname(__FILE__), '..')
   
-  config = 
+  config = {}
   
   config_file = File.join $home, '.lolcommitsrc'
   if File.exists? config_file
-	  config = YAML.load(config_file)
+	  config = YAML.load_file(config_file)
+	  print config
   end
 
   def is_mac?
