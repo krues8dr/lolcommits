@@ -163,7 +163,7 @@ module Lolcommits
 		draw.annotate(canvas, 0, 0, 0, 0, word_wrap(commit_msg, 50)) do
 		  self.gravity = SouthWestGravity
 		  self.pointsize = 24
-		  self.interline_spacing = -(24 / 5) if self.respond_to?(:interline_spacing)
+		  self.interline_spacing = -((self.pointsize) / 5) if self.respond_to?(:interline_spacing)
 		  self.stroke_width = 2
 		end
 	end
