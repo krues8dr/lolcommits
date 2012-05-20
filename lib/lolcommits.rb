@@ -50,13 +50,13 @@ module Lolcommits
   def parse_git(dir='.')
     g = Git.open('.')
     commit = g.log.first
-    puts commit.message
     commit_msg = commit.message.split("\n").first
     commit_sha = commit.sha[0..10]
+    commit_user = commit.committer
     basename = File.basename(g.dir.to_s)
     basename.sub!(/^\./, 'dot') #no invisible directories in output, thanks!
     loldir = File.join LOLBASEDIR, basename
-    return loldir, commit_sha, commit_msg
+    return loldir, commit_sha, commit_msg, commit_user
   end
 
   def capture(capture_delay=0, is_test=false, test_msg=nil, test_sha=nil)
@@ -72,7 +72,7 @@ module Lolcommits
     # Read the git repo information from the current working directory
     #
     if not is_test
-      loldir, commit_sha, commit_msg = parse_git
+      loldir, commit_sha, commit_msg, commit_user = parse_git
     else
       commit_msg = test_msg
       commit_sha = test_sha
@@ -153,18 +153,32 @@ module Lolcommits
 	
 		draw.fill = 'white'
 		draw.stroke = 'black'
-	
-		draw.annotate(canvas, 0, 0, 0, 0, commit_sha) do
-		  self.gravity = NorthEastGravity
-		  self.pointsize = 24
-		  self.stroke_width = 2
+		
+		if @config['annotate']['commitsha']
+			draw.annotate(canvas, 0, 0, 0, 0, commit_sha) do
+			  self.gravity = NorthEastGravity
+			  self.pointsize = 24
+			  self.stroke_width = 2
+			end
 		end
 	
-		draw.annotate(canvas, 0, 0, 0, 0, word_wrap(commit_msg, 50)) do
-		  self.gravity = SouthWestGravity
-		  self.pointsize = 24
-		  self.interline_spacing = -((self.pointsize) / 5) if self.respond_to?(:interline_spacing)
-		  self.stroke_width = 2
+		if @config['annotate']['commitmsg']
+			message = ''
+			
+			if @confige['annotate']['commituser']
+				message << commit_user 
+				message << " - "
+			end
+			
+			message << commit_msg
+			
+		
+			draw.annotate(canvas, 0, 0, 0, 0, word_wrap(message, 50)) do
+			  self.gravity = SouthWestGravity
+			  self.pointsize = 24
+			  self.interline_spacing = -(48 / 5) if self.respond_to?(:interline_spacing)
+			  self.stroke_width = 2
+			end
 		end
 	end
 
