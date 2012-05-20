@@ -62,6 +62,14 @@ module Lolcommits
   end
 
   def capture(capture_delay=0, is_test=false, test_msg=nil, test_sha=nil)
+
+    # convenience method for word wrapping
+    # based on https://github.com/cmdrkeene/memegen/blob/master/lib/meme_generator.rb
+    def word_wrap(text, col = 27)
+      wrapped = text.gsub(/(.{1,#{col + 4}})(\s+|\Z)/, "\\1\n")
+      wrapped.chomp!
+    end
+  
     #
     # Read the git repo information from the current working directory
     #
@@ -134,38 +142,33 @@ module Lolcommits
     if (canvas.columns > 640 || canvas.rows > 480)
       canvas.resize_to_fill!(640,480)
     end
-
-    # create a draw object for annotation
-    draw = Magick::Draw.new
-    #if is_mac?
-    #  draw.font = "/Library/Fonts/Impact.ttf"
-    #else
-    #  draw.font = "/usr/share/fonts/TTF/impact.ttf"
-    #end
-    draw.font = File.join(LOLCOMMITS_ROOT, "fonts", "Impact.ttf")
-
-    draw.fill = 'white'
-    draw.stroke = 'black'
-
-    # convenience method for word wrapping
-    # based on https://github.com/cmdrkeene/memegen/blob/master/lib/meme_generator.rb
-    def word_wrap(text, col = 27)
-      wrapped = text.gsub(/(.{1,#{col + 4}})(\s+|\Z)/, "\\1\n")
-      wrapped.chomp!
-    end
-
-    draw.annotate(canvas, 0, 0, 0, 0, commit_sha) do
-      self.gravity = NorthEastGravity
-      self.pointsize = 24
-      self.stroke_width = 2
-    end
-
-    draw.annotate(canvas, 0, 0, 0, 0, word_wrap(commit_msg)) do
-      self.gravity = SouthWestGravity
-      self.pointsize = 24
-      self.interline_spacing = -(48 / 5) if self.respond_to?(:interline_spacing)
-      self.stroke_width = 2
-    end
+	
+	if config['annotate']
+		# create a draw object for annotation
+		draw = Magick::Draw.new
+		#if is_mac?
+		#  draw.font = "/Library/Fonts/Impact.ttf"
+		#else
+		#  draw.font = "/usr/share/fonts/TTF/impact.ttf"
+		#end
+		draw.font = File.join(LOLCOMMITS_ROOT, "fonts", "Impact.ttf")
+	
+		draw.fill = 'white'
+		draw.stroke = 'black'
+	
+		draw.annotate(canvas, 0, 0, 0, 0, commit_sha) do
+		  self.gravity = NorthEastGravity
+		  self.pointsize = 24
+		  self.stroke_width = 2
+		end
+	
+		draw.annotate(canvas, 0, 0, 0, 0, word_wrap(commit_msg)) do
+		  self.gravity = SouthWestGravity
+		  self.pointsize = 24
+		  self.interline_spacing = -(48 / 5) if self.respond_to?(:interline_spacing)
+		  self.stroke_width = 2
+		end
+	end
 
     #
     # Squash the images and write the files
