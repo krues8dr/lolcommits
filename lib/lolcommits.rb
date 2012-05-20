@@ -166,7 +166,7 @@ module Lolcommits
 			message = ''
 			
 			if @config['annotate']['commituser']
-				message << commit_user 
+				message << commit_user.name
 				message << " - "
 			end
 			
