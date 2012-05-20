@@ -177,5 +177,7 @@ module Lolcommits
     if is_test
       Launchy.open(File.join loldir, "#{commit_sha}.jpg")
     end
+    
+    puts "done."
   end
 end
