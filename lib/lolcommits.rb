@@ -165,7 +165,7 @@ module Lolcommits
 		if @config['annotate']['commitmsg']
 			message = ''
 			
-			if @confige['annotate']['commituser']
+			if @config['annotate']['commituser']
 				message << commit_user 
 				message << " - "
 			end
