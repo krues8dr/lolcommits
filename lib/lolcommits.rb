@@ -19,6 +19,7 @@ module Lolcommits
   config = {}
   
   config_file = File.join $home, '.lolcommitsrc'
+  print config_file
   if File.exists? config_file
 	  config = YAML.load_file(config_file)
 	  print config
