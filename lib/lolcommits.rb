@@ -22,7 +22,7 @@ module Lolcommits
   puts config_file
   if File.exists? config_file
 	  config = YAML.load_file(config_file)
-	  puts config
+	  puts config["annotate"]["commitmsg"]
   end
 
   def is_mac?
