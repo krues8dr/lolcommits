@@ -171,7 +171,7 @@ module Lolcommits
     # Squash the images and write the files
     #
     
-    datetime = Time.new.strftime("%Y%m%d")
+    datetime = Time.new.strftime("%Y%m%d-%H%M%S")
     
     #canvas.flatten_images.write("#{loldir}/#{commit_sha}.jpg")
     canvas.write(File.join loldir, "#{datetime}_#{commit_sha}.jpg")
