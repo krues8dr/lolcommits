@@ -170,7 +170,7 @@ module Lolcommits
     # Squash the images and write the files
     #
     #canvas.flatten_images.write("#{loldir}/#{commit_sha}.jpg")
-    canvas.write(File.join loldir, "#{commit_sha}.jpg")
+    puts canvas.write(File.join loldir, "#{commit_sha}.jpg")
     FileUtils.rm(snapshot_loc)
 
     #if in test mode, open image for inspection
